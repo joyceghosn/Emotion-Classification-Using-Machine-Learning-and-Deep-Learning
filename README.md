@@ -1,158 +1,143 @@
 **Emotion Classification with Machine Learning and Deep Learning Models**
 **Introduction:**
-
-This project investigates the performance of multiple machine learning and deep learning models for multi-class emotion classification in short text messages. It builds a complete NLP pipeline that includes data cleaning, class rebalancing, feature engineering, TF-IDF vectorization, tokenization, and the evaluation of traditional classifiers, neural network architectures, and unsupervised clustering. The objective is to understand how different modeling strategies behave on the same dataset and identify which techniques are most effective for recognizing emotional cues in real-world, short-form text.
+This project presents a comprehensive analysis of emotion classification in short text messages using a range of machine learning and deep learning models. The goal is to understand how different architectures behave when exposed to short, expressive, and highly imbalanced emotional text. The pipeline includes dataset exploration, text cleaning, class balancing, feature engineering, TF-IDF vectorization, tokenization, and the evaluation of both supervised and unsupervised models. By comparing traditional ML models with FFNN, CNN, and LSTM architectures, the project identifies which techniques best capture emotional patterns in real-world short text.
 
 **Table of Contents:**
 
-Project Overview
+* Project Overview
 
-Dataset Description
+* Dataset Description
 
-Methodology
+* Methodology
 
-Machine Learning Models
+* Machine Learning Models
 
-Deep Learning Models
+* Deep Learning Models
 
-Unsupervised Learning
+* Unsupervised Learning
 
-Results
+* Results
 
-Key Findings
+* Key Findings
 
-What I Learned
+* What I Learned
 
-Limitations and Future Work
+* Limitations and Future Work
 
-Conclusion
+*Conclusion
 
 **Project Overview**
 
-The task addressed in this project is the automatic classification of emotions expressed in short text samples. Short messages on the internet often contain emotional cues that are difficult for simplistic models to interpret. This project compares a spectrum of approaches—from linear models to CNNs—to understand which architectures best capture emotional signals and why.
-
-The workflow integrates:
-
-Dataset loading and exploration
-
-Text normalization and stopword removal
-
-Class balancing through targeted downsampling
-
-TF-IDF vectorization for traditional models
-
-Tokenization and sequence padding for neural networks
-
-Training and evaluation of multiple classification algorithms
-
-Visualization and interpretability components such as word clouds and training curves
-
-All implementation details are based on the notebook code. 
-
-emotion_classification_ml
+This project investigates the automatic detection of emotions in short text messages. Short-form user text often carries cues such as sentiment, intensity, and linguistic markers that require models to capture subtle local patterns. The project evaluates a broad spectrum of modeling strategies—traditional ML, feedforward neural networks, convolutional architectures, recurrent networks, and clustering—to understand how model structure and data properties interact. Through a unified pipeline, the project benchmarks each approach and analyzes their strengths, weaknesses, and suitability for short emotional text classification.
 
 Dataset Description
 
-The dataset consists of short text messages labeled with an emotion category (e.g., love, fun, worry, boredom, hate, happiness, relief, neutral).
+The dataset contains short text snippets labeled with emotion categories (e.g., love, fun, worry, boredom, hate, happiness, relief, neutral).
 Each row contains:
 
--text — raw user message
+text — raw input message
 
-Emotion — target class
+Emotion — corresponding label
 
-clean_text — preprocessed version
+clean_text — lowercased, punctuation-free, stopword-filtered version
 
-text_length — number of tokens
+text_length — token count
 
-Key properties:
+Key characteristics:
 
-Highly imbalanced, with neutral being the most frequent category
+Strong class imbalance with neutral dominating
 
-Duplicate rows removed
+Balanced via controlled downsampling
 
-Balanced through downsampling to achieve a uniform distribution across labels
+Typical text length < 20 words
 
-Short message lengths (typically < 20 words), influencing neural model design such as maximum sequence length and padding strategy
+Final cleaned dataset stored locally and in Drive
+
+Used for both TF-IDF and tokenized sequence pipelines
 
 Methodology
 Preprocessing
 
 Lowercasing
 
-Removal of punctuation and non-alphabetic characters
+Removal of non-alphabetic characters
 
-Stopword filtering (scikit-learn’s built-in list)
+Stopword filtering
 
-Creation of clean_text
+Duplicate removal
 
-Word-count distribution analysis
+Computation of text lengths for padding decisions
 
-Class rebalancing to mitigate severe label imbalance
+Class downsampling to mitigate imbalance
 
 Feature Engineering
 
-Two parallel representations were created:
+Two parallel representations were used:
 
-1. TF–IDF vectors (5,000 features)
+TF-IDF (5,000 max features)
 
-Used for traditional ML classifiers.
+For linear models, probabilistic models, and tree-based classifiers.
 
-2. Tokenized + padded sequences (maxlen=100)
+Tokenized & Padded Sequences
 
-Used for deep learning models (Embedding → NN architectures).
+Using Keras Tokenizer with:
 
-Both pipelines are independently trained and evaluated to highlight strengths and weaknesses.
+num_words=10000
+
+OOV token
+
+maxlen=100 padding
+
+These representations support deep learning architectures.
 
 Machine Learning Models
 
-Four supervised traditional classifiers were implemented on TF-IDF features:
+Traditional ML models were trained on TF-IDF features:
 
 Logistic Regression
 
-Strong generalization and stable performance
+Robust, stable, strong F1 performance
 
-Hyperparameter tuning (C) optimized via GridSearchCV
-
-Balanced F1-scores across classes
+Improved via C-parameter tuning (GridSearchCV)
 
 Multinomial Naive Bayes
 
-Fast but limited
+Lightweight, but underperforms on nuanced emotional text
 
-Underperforms due to conditional independence assumptions
+Suffers from independence assumptions
 
-Linear Support Vector Machine (SVM)
+Linear SVM
 
-One of the strongest traditional baselines
+Best-performing traditional classifier
 
-High F1 scores across all labels
-
-Robust to noise and high-dimensional sparsity
+Strong generalization, consistent across all emotional categories
 
 Decision Tree
 
-High accuracy but severe overfitting
+High accuracy but extensive overfitting
 
-Hyperparameters (max_depth, min_samples_split) confirm tendency to memorize training data
-
-These models provide strong baselines before moving to neural architectures.
+GridSearch confirms tendency to fully memorize structure
 
 Deep Learning Models
 
-Deep learning models were trained using tokenized and padded sequences, enabling comparison against traditional approaches.
+Deep learning models were trained on tokenized sequences:
 
 Feedforward Neural Network (FFNN)
 
 Architecture:
-Embedding → GlobalAveragePooling1D → Dense → Softmax
+Embedding → GlobalAveragePooling → Dense → Softmax
 
-Performance:
+Updated interpretation:
 
-~95.8% validation accuracy
+Trains steadily with no signs of overfitting
 
-Strong generalization
+However: limited structural capacity
 
-Minor weaknesses on rare classes such as boredom and empty
+Does not model n-grams, local patterns, or sequential context
+
+Underperforms CNN and traditional ML models despite high accuracy
+
+Highlights the importance of architectural alignment with data structure
 
 Convolutional Neural Network (CNN)
 
@@ -161,13 +146,13 @@ Embedding → Conv1D → MaxPooling → Flatten → Dense → Softmax
 
 Performance:
 
-~99% accuracy and near-perfect macro and weighted F1
+Best overall model (~99% accuracy)
 
-Excels at capturing short-range patterns (n-grams) such as “not happy”, “feel empty”, etc.
+Captures local emotional patterns effectively
 
-Outperforms all other models, including FFNN and traditional ML
+Handles both frequent and minority classes
 
-Fastest and most stable training curves among all deep learning models
+Fastest convergence and most stable validation performance
 
 LSTM
 
@@ -176,103 +161,95 @@ Embedding → LSTM → Dense
 
 Performance:
 
-Accuracy stagnant at ~22%
+Fails to learn (accuracy ~22%)
 
-Fails to learn emotional structure
+Short text sequences lack long dependency structures
 
-Underperforms due to short sequences that do not benefit from recurrent architecture
-
-Demonstrates the importance of matching model architecture to data characteristics
+Shows why recurrent models are unnecessary here
 
 Unsupervised Learning
-KMeans Clustering
+KMeans (TF-IDF)
 
-Trained on TF-IDF vectors
+Adjusted Rand Index: 0.0878
 
-Evaluated with Adjusted Rand Index: 0.0878
+Near-random clustering
 
-Indicates clustering is essentially random
-
-Confirms unsupervised methods are unsuitable for multi-class emotional interpretation
+Confirms unsupervised methods are unsuitable for emotion inference
 
 Results
 Traditional ML Summary
-Model	Performance Notes
-Logistic Regression	Strong baseline, stable results
-SVM	Best among traditional ML, high F1 across all emotions
+Model	Observations
+Logistic Regression	Strong baseline; balanced F1 across classes
+SVM	Best traditional model; robust generalization
 Naive Bayes	Underperformed significantly
-Decision Tree	Overfitting, unrealistic scores
+Decision Tree	Severe overfitting; unrealistic per-class scores
 Deep Learning Summary
 Model	Accuracy	Observations
-FFNN	~97%	Solid performance; struggles with minority classes
-CNN	~99%	Best overall model; excellent on rare and frequent classes alike
-LSTM	~22%	Failed to learn; unsuitable for short texts
+FFNN	~97%	Trained steadily but structurally limited; cannot capture n-grams or sequential cues; significantly weaker than CNN and SVM
+CNN	~99%	Best-performing model; excellent on all classes, including rare emotions; captures local emotional patterns
+LSTM	~22%	Failed to learn; dataset too short for recurrent modeling
 Unsupervised
 Model	Metric	Score
 KMeans	ARI	0.0878
 Key Findings
 
-CNN is the superior architecture for short-text emotion classification.
-It captures local patterns (n-grams) that strongly correlate with emotional content.
+CNN is the optimal architecture for short emotional text because emotions are often encoded in local phrase patterns (e.g., “feel empty”, “not happy”).
 
-LSTM underperforms when text sequences are short.
-Long-range dependencies are minimal in this dataset, making LSTMs ineffective.
+FFNNs, despite high accuracy, are fundamentally limited—they cannot model word order, n-grams, or contextual structure.
 
-SVM is the most reliable traditional model, offering strong generalization without overfitting.
+SVM is the strongest traditional model, offering competitive performance close to FFNN but below CNN.
 
-Decision Trees achieve deceptively high accuracy due to memorization, not true pattern learning.
+LSTMs underperform on short text, demonstrating a mismatch between architecture and data properties.
 
-TF-IDF is a powerful and surprisingly competitive baseline, often rivaling neural models except CNN.
+Decision Trees overfit aggressively, making raw accuracy misleading.
 
-Unsupervised learning is not suitable for emotional inference in sparse, high-dimensional text.
+TF-IDF remains a strong classical baseline, but lacks semantic depth compared to embeddings.
 
-Class balance is crucial; downsampling ensures that models do not default to the majority (neutral) class.
+Unsupervised clustering is ineffective for multi-class emotional interpretation.
 
 What I Learned
 
-How to build an end-to-end NLP classification pipeline.
+How to design and implement a full NLP pipeline from raw text to evaluation
 
-The importance of text preprocessing and effective feature engineering.
+Techniques for cleaning and balancing large text datasets
 
-Practical understanding of TF-IDF vs tokenized sequence representations.
+Differences between sparse (TF-IDF) and embedded sequence representations
 
-Differences in behavior between linear models, tree-based models, CNNs, FFNNs, and LSTMs.
+When classical models (SVM, LR) outperform neural networks
 
-How architectural choices must align with data properties (e.g., CNNs for short phrases).
+Why architectural alignment matters: CNN excels, FFNN is limited, LSTM fails
 
-How to interpret evaluation metrics beyond accuracy and detect overfitting.
+How to diagnose model behavior through classification reports and curves
 
-How unsupervised methods behave on labeled text.
+How to interpret overfitting vs generalization
 
-How to visualize textual data through word clouds and distribution plots.
+The limitations of unsupervised learning in complex classification tasks
 
-How to save, compare, and analyze predictions across models.
-
-Deep practical intuition for why CNNs excel in NLP tasks involving short-form text.
+Best practices for saving models, generating predictions, and organizing results
 
 Limitations and Future Work
 Limitations
 
-Neural models rely on randomly initialized embeddings; pretrained embeddings could provide richer semantics.
+Random-initialized embeddings limit semantic richness
 
-LSTM architecture was not tuned extensively; alternative recurrent designs might improve performance.
+LSTM architecture not optimized for short sequences
 
-TF-IDF does not capture word order or semantic nuance.
+TF-IDF cannot encode semantic or positional information
 
-Dataset may contain labeling noise typical of user-generated emotional data.
+Dataset labeling may contain noise typical of social text
 
 Future Work
 
-Integrate pretrained embeddings (e.g., GloVe, FastText) or transformer models (BERT, DistilBERT).
+Integrate pretrained embeddings (GloVe, FastText) or transformer models (BERT, DistilBERT)
 
-Add regularization or pruning for Decision Trees.
+Investigate class-weighted training for minority emotions
 
-Explore data augmentation for rare emotional classes.
+Add attention layers or hybrid CNN-LSTM architectures
 
-Implement attention-based architectures.
+Explore explainability tools such as SHAP or Grad-CAM for CNN
 
-Extend the pipeline to production-level deployment for emotion-aware applications.
+Extend to production deployment or real-time emotion monitoring
 
-Conclusion
+**Conclusion:**
 
-This project presents a comprehensive comparison of machine learning and deep learning techniques for multi-class emotion classification in short text messages. The findings demonstrate that convolutional neural networks significantly outperform both traditional models and other neural architectures, confirming their ability to capture localized emotional expressions. By building and evaluating a unified pipeline, this work highlights how model selection, feature representation, and data characteristics interact to influence performance. The results provide a solid foundation for future work using advanced embeddings or transformer-based models, and offer valuable insights for real-world applications requiring automated emotion detection.
+This project provides a rigorous comparative study of machine learning and deep learning methods for emotion classification in short text. The results demonstrate that convolutional neural networks outperform all other models due to their ability to capture local linguistic patterns strongly tied to emotional expression. FFNNs, although achieving high accuracy, fail to model contextual or sequential information, and LSTMs underperform due to the brevity of the text. Traditional ML models, particularly SVM, remain competitive baselines. Overall, the project highlights how architectural suitability, feature representation, and text length fundamentally shape model performance in emotion detection tasks.
