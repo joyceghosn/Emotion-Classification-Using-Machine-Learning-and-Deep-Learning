@@ -1,9 +1,9 @@
-Emotion Classification with Machine Learning and Deep Learning Models
-Introduction
+**Emotion Classification with Machine Learning and Deep Learning Models**
+**Introduction:**
 
 This project investigates the performance of multiple machine learning and deep learning models for multi-class emotion classification in short text messages. It builds a complete NLP pipeline that includes data cleaning, class rebalancing, feature engineering, TF-IDF vectorization, tokenization, and the evaluation of traditional classifiers, neural network architectures, and unsupervised clustering. The objective is to understand how different modeling strategies behave on the same dataset and identify which techniques are most effective for recognizing emotional cues in real-world, short-form text.
 
-Table of Contents
+**Table of Contents:**
 
 Project Overview
 
@@ -27,7 +27,7 @@ Limitations and Future Work
 
 Conclusion
 
-Project Overview
+**Project Overview**
 
 The task addressed in this project is the automatic classification of emotions expressed in short text samples. Short messages on the internet often contain emotional cues that are difficult for simplistic models to interpret. This project compares a spectrum of approaches—from linear models to CNNs—to understand which architectures best capture emotional signals and why.
 
@@ -56,7 +56,7 @@ Dataset Description
 The dataset consists of short text messages labeled with an emotion category (e.g., love, fun, worry, boredom, hate, happiness, relief, neutral).
 Each row contains:
 
-text — raw user message
+-text — raw user message
 
 Emotion — target class
 
