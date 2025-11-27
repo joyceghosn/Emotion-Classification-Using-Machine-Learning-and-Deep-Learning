@@ -1,29 +1,20 @@
 **Emotion Classification with Machine Learning and Deep Learning Models**
+
 **Introduction:**
+
 This project presents a comprehensive analysis of emotion classification in short text messages using a range of machine learning and deep learning models. The goal is to understand how different architectures behave when exposed to short, expressive, and highly imbalanced emotional text. The pipeline includes dataset exploration, text cleaning, class balancing, feature engineering, TF-IDF vectorization, tokenization, and the evaluation of both supervised and unsupervised models. By comparing traditional ML models with FFNN, CNN, and LSTM architectures, the project identifies which techniques best capture emotional patterns in real-world short text.
 
 **Table of Contents:**
-
 * Project Overview
-
 * Dataset Description
-
 * Methodology
-
 * Machine Learning Models
-
 * Deep Learning Models
-
 * Unsupervised Learning
-
 * Results
-
 * Key Findings
-
 * What I Learned
-
 * Limitations and Future Work
-
 * Conclusion
 
 **Project Overview**
@@ -41,29 +32,19 @@ Each row contains:
 * text_length — token count
 
 **Key characteristics:**
-
 * Strong class imbalance with neutral dominating
-
 * Balanced via controlled downsampling
-
 * Typical text length < 20 words
-
 * Final cleaned dataset stored locally and in Drive
-
 * Used for both TF-IDF and tokenized sequence pipelines
 
 **Methodology:**
 **Preprocessing**
 * Lowercasing
-
 * Removal of non-alphabetic characters
-
 * Stopword filtering
-
 * Duplicate removal
-
 * Computation of text lengths for padding decisions
-
 * Class downsampling to mitigate imbalance
 
 **Feature Engineering:**
@@ -80,7 +61,6 @@ Using Keras Tokenizer with:
 These representations support deep learning architectures.
 
 **Machine Learning Models:**
-
 Traditional ML models were trained on TF-IDF features:
 
 **Logistic Regression:**
@@ -115,13 +95,9 @@ Architecture:
 Embedding → Conv1D → MaxPooling → Flatten → Dense → Softmax
 
 **Performance:**
-
 * Best overall model (~99% accuracy)
-
 * Captures local emotional patterns effectively
-
 * Handles both frequent and minority classes
-
 * Fastest convergence and most stable validation performance
 
 **LSTM:**
@@ -129,11 +105,8 @@ Architecture:
 Embedding → LSTM → Dense
 
 **Performance:**
-
 * Fails to learn (accuracy ~22%)
-
 * Short text sequences lack long dependency structures
-
 * Shows why recurrent models are unnecessary here
 
 **Unsupervised Learning:**
@@ -157,57 +130,35 @@ In contrast, the LSTM model performed poorly, with accuracy around 22%. Because 
 KMeans clustering performed poorly, with an Adjusted Rand Index of just 0.0878. This score is close to random, indicating that unsupervised clustering is not suitable for multi-class emotion inference in sparse or short text data.
 
 **Key Findings**
-
 * CNN is the dominant model, outperforming all others due to its ability to capture local phrase-level emotional patterns.
-
 * FFNN achieves high accuracy but is fundamentally limited; absence of sequence modeling leads to significantly weaker true performance.
-
 * SVM remains a strong baseline, rivaling deep models except CNN.
-
 * LSTM is ineffective due to short input sequences that don’t require long-term dependencies.
-
 * Decision Trees overfit heavily, giving misleading accuracy.
-
 * Clustering is not viable for emotion classification in sparse text.
-
 * TF–IDF is surprisingly competitive, but lacks semantic depth compared to learned embeddings.
 
 **What I Learned:**
-
-* How to build a complete NLP classification pipeline
-
-* Differences between TF–IDF and embedded representations
-
-* Why model choice must align with data characteristics
-
-* How to analyze training curves, confusion patterns, and overfitting
-
-* Practical experience with Logistic Regression, SVM, Naive Bayes, Decision Trees, FFNN, CNN, LSTM, and KMeans
-
-* How short text length affects sequence-based networks
-
-* How to evaluate models beyond accuracy using F1-scores and qualitative insights
+* How to build a complete NLP classification pipeline.
+* Differences between TF–IDF and embedded representations.
+* Why model choice must align with data characteristics.
+* How to analyze training curves, confusion patterns, and overfitting.
+* Practical experience with Logistic Regression, SVM, Naive Bayes, Decision Trees, FFNN, CNN, LSTM, and KMeans.
+* How short text length affects sequence-based networks.
+* How to evaluate models beyond accuracy using F1-scores and qualitative insights.
 
 **Limitations and Future Work**
 **Limitations**
 * Random embeddings limit semantic richness
-
 * Minority classes remain challenging
-
 * TF–IDF discards positional and semantic information
-
 * Dataset contains natural noise inherent to emotional text
 
 **Future Work**
-
 * Use pretrained embeddings (GloVe, FastText)
-
 * Test BERT, DistilBERT, or transformer-based models
-
 * Explore class-weighting and data augmentation
-
 * Investigate CNN + Attention hybrids
-
 * Add explainability methods (SHAP, Grad-CAM)
 
 **Conclusion**
