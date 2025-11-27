@@ -137,6 +137,9 @@ KMeans clustering performed poorly, with an Adjusted Rand Index of just 0.0878. 
 * Decision Trees overfit heavily, giving misleading accuracy.
 * Clustering is not viable for emotion classification in sparse text.
 * TF–IDF is surprisingly competitive, but lacks semantic depth compared to learned embeddings.
+  <img width="522" height="305" alt="image" src="https://github.com/user-attachments/assets/ee319648-01b5-4c46-a1a1-1e3fd0ef2a29" />
+
+
 
 **What I Learned:**
 * How to build a complete NLP classification pipeline.
