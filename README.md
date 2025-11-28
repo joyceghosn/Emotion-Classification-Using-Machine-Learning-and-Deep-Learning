@@ -24,11 +24,8 @@ This project investigates the automatic detection of emotions in short text mess
 The dataset contains short text snippets labeled with emotion categories (e.g., love, fun, worry, boredom, hate, happiness, relief, neutral).
 Each row contains:
 * text — raw input message
-
 * Emotion — corresponding label
-
 * clean_text — lowercased, punctuation-free, stopword-filtered version
-
 * text_length — token count
 
 **Key characteristics:**
@@ -138,7 +135,6 @@ KMeans clustering performed poorly, with an Adjusted Rand Index of just 0.0878. 
 * Clustering is not viable for emotion classification in sparse text.
 * TF–IDF is surprisingly competitive, but lacks semantic depth compared to learned embeddings.
   <img width="522" height="305" alt="image" src="https://github.com/user-attachments/assets/ee319648-01b5-4c46-a1a1-1e3fd0ef2a29" />
-
 
 
 **What I Learned:**
